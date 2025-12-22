@@ -1,15 +1,31 @@
-enum BookingStatus { pending, confirmed, completed, cancelled }
+enum BookingStatus {
+  pending,
+  confirmed,
+  completed,
+  failed,
+}
 
 class BookingModel {
   final String id;
-  final ServiceModel service;
-  BookingStatus status;
-  DateTime bookingTime;
+  final String serviceId;
+  final DateTime dateTime;
+  final BookingStatus status;
 
   BookingModel({
     required this.id,
-    required this.service,
+    required this.serviceId,
+    required this.dateTime,
     required this.status,
-    required this.bookingTime,
   });
+
+  BookingModel copyWith({
+    BookingStatus? status,
+  }) {
+    return BookingModel(
+      id: id,
+      serviceId: serviceId,
+      dateTime: dateTime,
+      status: status ?? this.status,
+    );
+  }
 }
