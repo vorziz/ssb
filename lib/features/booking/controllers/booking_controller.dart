@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../wallet/controllers/wallet_controller.dart';
 import '../models/booking_model.dart';
@@ -9,30 +10,49 @@ class BookingController extends GetxController {
   BookingController(this.walletController);
 
   var currentBooking = Rxn<BookingModel>();
+  var bookingHistory = <BookingModel>[].obs;
   Timer? _pollingTimer;
+
+  void resetBooking() {
+    currentBooking.value = null;
+    _pollingTimer?.cancel();
+  }
 
   void createBooking({
     required String serviceId,
     required int price,
     required WalletType paymentType,
+    required DateTime date,
+    required TimeOfDay time,
+    required String location,
   }) {
     if (!walletController.hasEnoughBalance(
       amount: price,
       type: paymentType,
     )) {
+      Get.snackbar('Error', 'Not enough balance');
       return;
     }
 
     walletController.deductBalance(
       amount: price,
       type: paymentType,
-      description: 'Booking service $serviceId',
+      description: 'Booking: $serviceId at $location',
+    );
+
+    final bookingDateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
     );
 
     currentBooking.value = BookingModel(
-      id: DateTime.now().toString(),
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
       serviceId: serviceId,
-      dateTime: DateTime.now(),
+      dateTime: bookingDateTime,
+      location: location,
       status: BookingStatus.pending,
     );
 
@@ -61,6 +81,7 @@ class BookingController extends GetxController {
     } else if (status == BookingStatus.confirmed) {
       currentBooking.value =
           currentBooking.value!.copyWith(status: BookingStatus.completed);
+      bookingHistory.insert(0, currentBooking.value!);
       _pollingTimer?.cancel();
     }
   }
