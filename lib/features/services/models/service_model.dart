@@ -11,4 +11,3 @@ class ServiceModel {
     required this.isAvailable,
   });
 }
-s
