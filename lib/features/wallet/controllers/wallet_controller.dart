@@ -1,22 +1,22 @@
 import 'package:get/get.dart';
-import '../models/wallet_transaction.dart';
+import '../models/transaction_model.dart';
 
-enum WalletType { wallet, token }
+enum WalletType { cash, token }
 
 class WalletController extends GetxController {
-  var walletBalance = 120.obs; // RM
-  var tokenBalance = 50.obs;   // GP Coins
-
-  var transactions = <WalletTransaction>[].obs;
+  var cashBalance = 500000.obs;
+  var tokenBalance = 50.obs;
+  var transactions = <TransactionModel>[].obs;
 
   bool hasEnoughBalance({
     required int amount,
     required WalletType type,
   }) {
-    if (type == WalletType.token) {
+    if (type == WalletType.cash) {
+      return cashBalance.value >= amount;
+    } else {
       return tokenBalance.value >= amount;
     }
-    return walletBalance.value >= amount;
   }
 
   void deductBalance({
@@ -24,25 +24,34 @@ class WalletController extends GetxController {
     required WalletType type,
     required String description,
   }) {
-    if (!hasEnoughBalance(amount: amount, type: type)) {
-      return;
-    }
-
-    if (type == WalletType.token) {
-      tokenBalance.value -= amount;
+    if (type == WalletType.cash) {
+      cashBalance.value -= amount;
     } else {
-      walletBalance.value -= amount;
+      tokenBalance.value -= amount;
     }
 
-    transactions.insert(
-      0,
-      WalletTransaction(
-        id: DateTime.now().toString(),
-        type: WalletTransactionType.debit,
-        amount: amount,
-        date: DateTime.now(),
-        description: description,
-      ),
-    );
+    transactions.insert(0, TransactionModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      description: description,
+      amount: amount,
+      type: type == WalletType.cash ? 'Cash' : 'Token',
+      date: DateTime.now(),
+    ));
+  }
+
+  void topUp({required int amount, required WalletType type}) {
+    if (type == WalletType.cash) {
+      cashBalance.value += amount;
+    } else {
+      tokenBalance.value += amount;
+    }
+
+    transactions.insert(0, TransactionModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      description: 'Top Up',
+      amount: amount,
+      type: type == WalletType.cash ? 'Cash' : 'Token',
+      date: DateTime.now(),
+    ));
   }
 }
