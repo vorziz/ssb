@@ -1,3 +1,7 @@
+/// Smart Service Booking Application
+/// 
+/// A comprehensive Flutter app for service booking with dual wallet system,
+/// rewards center, and AR-powered car locator with retail discovery.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'navigation/main_page.dart';
@@ -10,8 +14,13 @@ import 'features/car_locator/controllers/car_locator_controller.dart';
 import 'navigation/bottom_nav_controller.dart';
 import 'core/utils/app_binding.dart';
 
+/// Application entry point
+/// 
+/// Initializes all controllers and starts the app
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize controllers in dependency order
   final walletController = Get.put(WalletController());
   Get.put(BookingController(walletController));
   Get.put(ServiceController());
@@ -19,6 +28,7 @@ void main() {
   Get.put(BottomNavController());
   Get.put(HomeController());
   Get.put(CarLocatorController());
+  
   runApp(const MyApp());
 }
 
