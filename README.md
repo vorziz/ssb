@@ -7,6 +7,7 @@
 [![Dart](https://img.shields.io/badge/Dart-3.9.0-0175C2?logo=dart)](https://dart.dev)
 [![GetX](https://img.shields.io/badge/State%20Management-GetX-9C27B0)](https://pub.dev/packages/get)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success)](https://github.com/vorziz/ssb)
 
 ---
 
