@@ -26,11 +26,19 @@ class BookingController extends GetxController {
     required TimeOfDay time,
     required String location,
   }) {
+    // Validate balance before proceeding
     if (!walletController.hasEnoughBalance(
       amount: price,
       type: paymentType,
     )) {
-      Get.snackbar('Error', 'Not enough balance');
+      final balanceType = paymentType == WalletType.cash ? 'cash' : 'tokens';
+      Get.snackbar(
+        'Insufficient Balance',
+        'You don\'t have enough $balanceType to complete this booking',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red.shade900,
+      );
       return;
     }
 
