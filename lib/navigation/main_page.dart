@@ -5,6 +5,7 @@ import '../features/services/ui/service_list_page.dart';
 import '../features/wallet/ui/wallet_page.dart';
 import '../features/rewards/ui/rewards_page.dart';
 import '../features/home/ui/home_page.dart';
+import '../features/car_locator/ui/map_view_page.dart';
 
 import 'bottom_nav_controller.dart';
 
@@ -18,6 +19,7 @@ class MainPage extends StatelessWidget {
     'Services',
     'Wallet',
     'Rewards',
+    'Discover',
   ];
 
   @override
@@ -34,6 +36,7 @@ class MainPage extends StatelessWidget {
             ServiceListPage(),
             WalletPage(),
             RewardsPage(),
+            MapViewPage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -56,6 +59,10 @@ class MainPage extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(Icons.card_giftcard),
               label: 'Rewards',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: 'Discover',
             ),
           ],
         ),
