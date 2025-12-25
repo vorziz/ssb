@@ -19,10 +19,18 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(() => Card(
+            elevation: 2,
+            color: Colors.blue.shade50,
             child: ListTile(
-              leading: const Icon(Icons.account_balance_wallet),
-              title: const Text('Wallet Balance'),
-              subtitle: Text('RM ${walletController.cashBalance.value} | ${walletController.tokenBalance.value} Tokens'),
+              leading: CircleAvatar(
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.account_balance_wallet, color: Colors.white),
+              ),
+              title: const Text('Wallet Balance', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(
+                'RM ${walletController.cashBalance.value} | ${walletController.tokenBalance.value} Tokens',
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
           )),
           
